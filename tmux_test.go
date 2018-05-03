@@ -16,14 +16,15 @@ func TestCompilePattern(t *testing.T) {
 
 func TestParseSessions(t *testing.T) {
 	fixture := []string{
-		"foo: 1 windows",
+		"foo: 1 windows (yee datez u know) [50x10]",
 		"bar: 2 windows (some date) [100x20] (attached)",
 		""}
 
 	expected := []Session{
 		Session{
-			name:    "foo",
-			windows: 1},
+			name:     "foo",
+			windows:  1,
+			attached: false},
 		Session{
 			name:     "bar",
 			windows:  2,
@@ -39,7 +40,7 @@ func TestParseSessions(t *testing.T) {
 	} else {
 		for i := range received {
 			if !sessionsEqual(expected[i], received[i]) {
-				t.Errorf("Sessions do not equal:\n%v\n%v\n",
+				t.Errorf("Sessions do not equal:\nExpected: %v\nReceived: %v\n",
 					expected[i],
 					received[i])
 			}
