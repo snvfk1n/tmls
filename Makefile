@@ -6,7 +6,11 @@ LDFLAGS=-ldflags "-X main.BuildTime=`date +%FT%T%z`"
 
 .DEFAULT_GOAL: $(BINARY)
 
-all: clean test build
+all: clean prebuild test build
+
+.PHONY: prebuild
+prebuild: $(SOURCES)
+	go get -d -v ./...
 
 .PHONY: build
 build: $(SOURCES)
