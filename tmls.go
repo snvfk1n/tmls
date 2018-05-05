@@ -4,5 +4,7 @@ func main() {
 	sessions := getSessions()
 	selectedSession := selectItem(sessions)
 
-	attachSession(selectedSession)
+	if selectedSession != nil {
+		attachSession(selectedSession)
+	}
 }

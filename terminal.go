@@ -49,7 +49,7 @@ func getCharacter() []byte {
 
 	if err != nil {
 		return nil
-	} else {
-		return bytes[0:numRead]
 	}
+
+	return bytes[0:numRead]
 }

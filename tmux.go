@@ -80,5 +80,12 @@ func getSessions() []Session {
 }
 
 func attachSession(session *Session) {
+	fmt.Println(session.name)
 
+	cmd := exec.Command("tmux", "attach", "-t", session.name)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	cmd.Run()
 }
