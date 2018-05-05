@@ -1,13 +1,8 @@
 package main
 
-import (
-	"fmt"
-)
-
 func main() {
 	sessions := getSessions()
+	selectedSession := selectItem(sessions)
 
-	for _, session := range sessions {
-		fmt.Printf("Session %s, %d windows.\n", session.name, session.windows)
-	}
+	attachSession(selectedSession)
 }

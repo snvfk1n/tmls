@@ -47,7 +47,7 @@ func parseSessions(sessionEntries []string, r *regexp.Regexp) []Session {
 		}
 
 		match := res[0]
-		fmt.Println(match)
+
 		if len(match) < 5 {
 			continue
 		}
@@ -77,4 +77,8 @@ func getSessions() []Session {
 
 	sessionEntries := getTmuxSessions()
 	return parseSessions(sessionEntries, r)
+}
+
+func attachSession(session *Session) {
+
 }
