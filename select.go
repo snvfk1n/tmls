@@ -3,51 +3,48 @@ package main
 import (
 	"bytes"
 	"fmt"
-
-	"github.com/pkg/term"
+	"strings"
 )
 
-var (
-	up      = []byte{27, 91, 65}
-	down    = []byte{27, 91, 66}
-	sigquit = []byte{3}
-	sigill  = []byte{4}
-	tab     = []byte{9}
-	enter   = []byte{13}
-	esc     = []byte{27}
-)
+func resetOutput(lines int) {
+	cursorMostLeft()
 
-func cursorShow() {
-	fmt.Print("\x1b[?25h")
+	for i := 0; i < lines; i++ {
+		eraseLine()
+
+		if i < lines-1 {
+			cursorUp(1)
+		}
+	}
 }
 
-func cursorHide() {
-	fmt.Print("\x1b[?25l")
-}
+func displaySessions(sessions []Session, selected int, length int) {
+	for index, session := range sessions {
+		var buffer bytes.Buffer
 
-func cursorUp(n int) {
-	fmt.Printf("\x1b[%dA", n)
-}
+		if index == selected {
+			buffer.WriteString("\x1b[7m")
+		}
 
-func cursorMostLeft() {
-	fmt.Printf("\x1b[%dG", 0)
-}
+		label := []rune(session.name)
 
-func getch() []byte {
-	t, _ := term.Open("/dev/tty")
-	defer t.Close()
+		if len(label) > length {
+			label = append(label[:length-1], '…')
+		} else {
+			space := strings.Repeat(" ", length-len(label))
+			label = append(label, []rune(space)...)
+		}
 
-	term.RawMode(t)
+		buffer.WriteString(string(label))
 
-	bytes := make([]byte, 3)
-	numRead, err := t.Read(bytes)
+		if index < len(sessions)-1 {
+			buffer.WriteString("\n")
+		}
 
-	t.Restore()
+		buffer.WriteString("\x1b[0m")
 
-	if err != nil {
-		return nil
-	} else {
-		return bytes[0:numRead]
+		eraseLine()
+		fmt.Print(buffer.String())
 	}
 }
 
@@ -56,27 +53,12 @@ func selectItem(sessions []Session) *Session {
 
 	cursorHide()
 	defer cursorShow()
+	defer resetOutput(len(sessions))
 
 	for {
-		for index, session := range sessions {
-			var buffer bytes.Buffer
+		displaySessions(sessions, selected, 16)
 
-			if index == selected {
-				buffer.WriteString("x ")
-			} else {
-				buffer.WriteString("  ")
-			}
-
-			buffer.WriteString(session.name)
-
-			if index < len(sessions)-1 {
-				buffer.WriteString("\n")
-			}
-
-			fmt.Print(buffer.String())
-		}
-
-		c := getch()
+		c := getCharacter()
 
 		switch {
 		case bytes.Equal(c, sigquit) || bytes.Equal(c, sigill):
