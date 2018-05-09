@@ -16,17 +16,17 @@ func TestCompilePattern(t *testing.T) {
 
 func TestParseSessions(t *testing.T) {
 	fixture := []string{
-		"foo: 1 windows (yee datez u know) [50x10]",
-		"bar: 2 windows (some date) [100x20] (attached)",
+		"fo1o(0): 1 windows (yee datez u know) [50x10]",
+		"b_a-r$: 2 windows (some date) [100x20] (attached)",
 		""}
 
 	expected := []Session{
 		Session{
-			name:     "foo",
+			name:     "fo1o(0)",
 			windows:  1,
 			attached: false},
 		Session{
-			name:     "bar",
+			name:     "b_a-r$",
 			windows:  2,
 			attached: true}}
 
