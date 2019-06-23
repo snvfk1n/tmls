@@ -49,6 +49,11 @@ func displaySessions(sessions []Session, selected int, length int) {
 }
 
 func selectItem(sessions []Session) *Session {
+	if len(sessions) == 0 {
+		fmt.Printf("There are no active tmux sessions.\n")
+		return nil
+	}
+
 	selected := 0
 
 	cursorHide()
