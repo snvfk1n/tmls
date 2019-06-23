@@ -17,7 +17,7 @@ type Session struct {
 }
 
 func compilePattern() (*regexp.Regexp, error) {
-	return regexp.Compile(`^([^:]+)\: (\d+) windows \(.*\) \[(\d+)x(\d+)\](\s\(attached\))?`)
+	return regexp.Compile(`^([^:]+)\: (\d+) windows \([^\(]*\)(\s\[(\d+)x(\d+)\])?(\s\(attached\))?`)
 }
 
 func getTmuxSessions() []string {
@@ -48,20 +48,22 @@ func parseSessions(sessionEntries []string, r *regexp.Regexp) []Session {
 
 		match := res[0]
 
-		if len(match) < 5 {
+		if len(match) < 3 {
 			continue
 		}
 
 		windows, err := strconv.Atoi(match[2])
+		attachedValue := match[len(match) - 1]
+		attached := attachedValue == " (attached)"
 
 		if err != nil {
 			continue
 		}
-
+		
 		sessions = append(sessions, Session{
 			name:     match[1],
 			windows:  windows,
-			attached: len(match) > 5 && match[5] != ""})
+			attached: attached})
 	}
 
 	return sessions
@@ -71,7 +73,7 @@ func getSessions() []Session {
 	r, err := compilePattern()
 
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "There is an error with our expression: ", err)
+		fmt.Fprintln(os.Stderr, "There is an error with our regular expression: ", err)
 		os.Exit(1)
 	}
 
