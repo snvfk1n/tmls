@@ -14,6 +14,7 @@ var (
 	tab     = []byte{9}
 	enter   = []byte{13}
 	esc     = []byte{27}
+	quit    = []byte{113}
 )
 
 func cursorShow() {

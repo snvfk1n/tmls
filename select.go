@@ -66,7 +66,7 @@ func selectItem(sessions []Session) *Session {
 		c := getCharacter()
 
 		switch {
-		case bytes.Equal(c, sigquit) || bytes.Equal(c, sigill):
+		case bytes.Equal(c, sigquit) || bytes.Equal(c, sigill) || bytes.Equal(c, quit):
 			return nil
 		case bytes.Equal(c, up) && selected > 0:
 			selected--
