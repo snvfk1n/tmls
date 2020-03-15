@@ -27,6 +27,10 @@ func getTmuxSessions() []string {
 	)
 
 	if output, err = exec.Command("tmux", []string{"ls"}...).Output(); err != nil {
+		if ee, ok := err.(*exec.ExitError); ok && strings.HasPrefix(string(ee.Stderr), "no server running on") {
+			return []string{}
+		}
+
 		fmt.Fprintln(os.Stderr, "There was an error running `tmux ls`: ", err)
 		os.Exit(1)
 	}
@@ -53,13 +57,13 @@ func parseSessions(sessionEntries []string, r *regexp.Regexp) []Session {
 		}
 
 		windows, err := strconv.Atoi(match[2])
-		attachedValue := match[len(match) - 1]
+		attachedValue := match[len(match)-1]
 		attached := attachedValue == " (attached)"
 
 		if err != nil {
 			continue
 		}
-		
+
 		sessions = append(sessions, Session{
 			name:     match[1],
 			windows:  windows,
