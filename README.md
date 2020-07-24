@@ -1,9 +1,15 @@
 # tmls
 
-`tmls` is a CLI overlay for `tmux ls` that facilitates selection and attaching of sessions. Navigate active sessions with <kbd>↓</kbd>/<kbd>j</kbd> and <kbd>↑</kbd>/<kbd>k</kbd>, select one by hitting <kbd>enter</kbd>, or cancel with <kbd>ctrl</kbd>+<kbd>c</kbd> or <kbd>q</kbd>.
+`tmls` is a CLI overlay for `tmux ls` that facilitates selection and attaching of sessions. Navigate active sessions with <kbd>↓</kbd>/<kbd>↑</kbd> or <kbd>j</kbd>/<kbd>k</kbd>, select one via <kbd>enter</kbd>, or cancel with <kbd>ctrl</kbd>+<kbd>c</kbd> or <kbd>q</kbd>.
 
-You may build `tmls` on your own or obtain [pre-built binaries](https://github.com/falafeljan/tmls/releases) for macOS or Linux.
+### Installation
+
+You may build `tmls` on your own (see below) or simply via `go get github.com/falafeljan/tmls`. Alternatively, you may obtain [pre-built binaries on GitHub](https://github.com/falafeljan/tmls/releases) for macOS or Linux.
 
 ### Development
 
-You'll need Go (I recommend using 1.10) and `make`. Get the source via `go get github.com/fallafeljan/tmls`, navigate to `$GOPATH/src/github.com/fallafeljan/tmls` and build with `make`. Running `make install` will trigger `go install`, which makes the binary available to your system.
+You'll need Go (I recommend using a version newer than 1.10) and `make`. Obtain the source via Git or `go get -d github.com/falafeljan/tmls`, navigate to the cloned directory and build with `make`. Running `make install` will invoke `go install`, which will make the binary available to your system.
+
+## License
+
+`tmls` is licensed under GPL.
