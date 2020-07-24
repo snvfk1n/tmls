@@ -68,9 +68,9 @@ func selectItem(sessions []Session) *Session {
 		switch {
 		case bytes.Equal(c, sigquit) || bytes.Equal(c, sigill) || bytes.Equal(c, quit):
 			return nil
-		case bytes.Equal(c, up) && selected > 0:
+		case (bytes.Equal(c, up) || bytes.Equal(c, key_k)) && selected > 0:
 			selected--
-		case bytes.Equal(c, down) && selected < len(sessions)-1:
+		case (bytes.Equal(c, down) || bytes.Equal(c, key_j)) && selected < len(sessions)-1:
 			selected++
 		case bytes.Equal(c, enter):
 			return &sessions[selected]
