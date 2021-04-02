@@ -26,7 +26,7 @@ func displaySessions(sessions []Session, selected int, length int) {
 			buffer.WriteString("\x1b[7m")
 		}
 
-		label := []rune(session.name)
+		label := []rune(session.Name)
 
 		if len(label) > length {
 			label = append(label[:length-1], '…')

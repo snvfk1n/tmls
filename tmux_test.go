@@ -3,7 +3,7 @@ package main
 import "testing"
 
 func sessionsEqual(a Session, b Session) bool {
-	return a.name == b.name && a.windows == b.windows && a.attached == b.attached
+	return a.Name == b.Name && a.Windows == b.Windows && a.Attached == b.Attached
 }
 
 func TestCompilePattern(t *testing.T) {
@@ -22,13 +22,13 @@ func TestParseSessions(t *testing.T) {
 
 	expected := []Session{
 		Session{
-			name:     "fo1o(0)",
-			windows:  1,
-			attached: false},
+			Name:     "fo1o(0)",
+			Windows:  1,
+			Attached: false},
 		Session{
-			name:     "b_a-r$",
-			windows:  2,
-			attached: true}}
+			Name:     "b_a-r$",
+			Windows:  2,
+			Attached: true}}
 
 	r, _ := compilePattern()
 	received := parseSessions(fixture, r)

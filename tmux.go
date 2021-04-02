@@ -11,9 +11,9 @@ import (
 
 // Session describes a tmux session.
 type Session struct {
-	name     string
-	windows  int
-	attached bool
+	Name     string
+	Windows  int
+	Attached bool
 }
 
 func compilePattern() (*regexp.Regexp, error) {
@@ -65,9 +65,9 @@ func parseSessions(sessionEntries []string, r *regexp.Regexp) []Session {
 		}
 
 		sessions = append(sessions, Session{
-			name:     match[1],
-			windows:  windows,
-			attached: attached})
+			Name:     match[1],
+			Windows:  windows,
+			Attached: attached})
 	}
 
 	return sessions
@@ -86,9 +86,18 @@ func getSessions() []Session {
 }
 
 func attachSession(session *Session) {
-	fmt.Println(session.name)
+	fmt.Println(session.Name)
 
-	cmd := exec.Command("tmux", "attach", "-t", session.name)
+	cmd := exec.Command("tmux", "attach", "-t", session.Name)
+	cmd.Stdin = os.Stdin
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	cmd.Run()
+}
+
+func createSession(name string) {
+	cmd := exec.Command("tmux", "new", "-s", name)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
