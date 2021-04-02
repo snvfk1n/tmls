@@ -1,4 +1,4 @@
-module github.com/falafeljan/tmls
+module github.com/jankaszel/tmls
 
 go 1.12
 
