@@ -2,7 +2,8 @@ package selectlist
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/muesli/termenv"
+	"github.com/charmbracelet/lipgloss"
+	"strings"
 )
 
 type Model struct {
@@ -10,7 +11,11 @@ type Model struct {
 	Cursor int
 }
 
-var color func(s string) termenv.Color = termenv.ColorProfile().Color
+var subtle = lipgloss.AdaptiveColor{Light: "#D9DCCF", Dark: "#383838"}
+var boxStyle = lipgloss.NewStyle().
+	BorderStyle(lipgloss.NormalBorder()).
+	BorderForeground(subtle)
+var activeStyle = lipgloss.NewStyle().Width(32).Background(subtle)
 
 func NewModel(items []string) Model {
 	return Model{
@@ -29,14 +34,15 @@ func (m Model) View() string {
 	}
 
 	v := "Active sessions:\n"
+	items := make([]string, len(m.Items))
 	for i, item := range m.Items {
 		if i == m.Cursor {
-			v += item
+			items[i] = activeStyle.Render(item)
 		} else {
-			v += termenv.String(item).Foreground(color("237")).String()
+			items[i] = item
 		}
-		v += "\n"
 	}
+	v += boxStyle.Render(strings.Join(items, "\n"))
 	return v
 }
 

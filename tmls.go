@@ -102,15 +102,21 @@ func initialModel() model {
 	nameInput.Placeholder = "Create session"
 	nameInput.PlaceholderColor = "237"
 	nameInput.CharLimit = 64
-	nameInput.Width = 20
+	nameInput.Width = 30
 
+	mode := ModeSelect
 	selectList := selectlist.NewModel(sessionNames(sessions))
+
+	if len(sessions) == 0 {
+		mode = ModeCreate
+		nameInput.Focus()
+	}
 
 	return model{
 		sessions:   sessions,
 		selectList: selectList,
 		nameInput:  nameInput,
-		mode:       ModeSelect,
+		mode:       mode,
 		err:        nil,
 	}
 }
