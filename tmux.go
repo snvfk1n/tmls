@@ -27,7 +27,9 @@ func getTmuxSessions() []string {
 	)
 
 	if output, err = exec.Command("tmux", []string{"ls"}...).Output(); err != nil {
-		if ee, ok := err.(*exec.ExitError); ok && strings.HasPrefix(string(ee.Stderr), "no server running on") {
+		if ee, ok := err.(*exec.ExitError); ok &&
+			(strings.HasPrefix(string(ee.Stderr), "no server running on") ||
+				strings.HasPrefix(string(ee.Stderr), "error connecting to")) {
 			return []string{}
 		}
 
