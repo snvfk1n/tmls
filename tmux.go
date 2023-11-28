@@ -90,7 +90,7 @@ func getSessions() []Session {
 func attachSession(session *Session) {
 	fmt.Println(session.Name)
 
-	cmd := exec.Command("tmux", "attach", "-t", session.Name)
+	cmd := exec.Command("tmux", "-u", "attach", "-t", session.Name)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -99,7 +99,7 @@ func attachSession(session *Session) {
 }
 
 func createSession(name string) {
-	cmd := exec.Command("tmux", "new", "-s", name)
+	cmd := exec.Command("tmux", "-u", "new", "-s", name)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
