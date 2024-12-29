@@ -6,6 +6,9 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/jankaszel/tmls/selectlist"
 	"log"
+	"os"
+	"path/filepath"
+	"slices"
 )
 
 const (
@@ -103,6 +106,18 @@ func initialModel() model {
 	nameInput.PlaceholderColor = "237"
 	nameInput.CharLimit = 64
 	nameInput.Width = 30
+
+	path, err := os.Getwd()
+	if err == nil {
+		base := filepath.Base(path)
+		idx := slices.IndexFunc(sessions, func(s Session) bool { return s.Name == base })
+
+		if idx == -1 {
+			nameInput.SetValue(base)
+			nameInput.CursorEnd()
+			nameInput.Blur()
+		}
+	}
 
 	mode := ModeSelect
 	selectList := selectlist.NewModel(sessionNames(sessions))
