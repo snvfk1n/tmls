@@ -2,11 +2,13 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"os/exec"
 	"regexp"
 	"strconv"
 	"strings"
+	"syscall"
 )
 
 // Session describes a tmux session.
@@ -90,19 +92,27 @@ func getSessions() []Session {
 func attachSession(session *Session) {
 	fmt.Println(session.Name)
 
-	cmd := exec.Command("tmux", "-u", "attach", "-t", session.Name)
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+	tmuxPath, err := exec.LookPath("tmux")
+	if err != nil {
+		log.Fatalf("Could not find tmux: %v", err)
+	}
 
-	cmd.Run()
+	args := []string{"tmux", "-u", "attach", "-t", session.Name}
+
+	if err := syscall.Exec(tmuxPath, args, os.Environ()); err != nil {
+		log.Fatalf("Failed to exec tmux: %v", err)
+	}
 }
 
 func createSession(name string) {
-	cmd := exec.Command("tmux", "-u", "new", "-s", name)
-	cmd.Stdin = os.Stdin
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+	tmuxPath, err := exec.LookPath("tmux")
+	if err != nil {
+		log.Fatalf("Could not find tmux: %v", err)
+	}
 
-	cmd.Run()
+	args := []string{"tmux", "-u", "new", "-s", name}
+
+	if err := syscall.Exec(tmuxPath, args, os.Environ()); err != nil {
+		log.Fatalf("Failed to exec tmux: %v", err)
+	}
 }
