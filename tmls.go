@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
-	input "github.com/charmbracelet/bubbles/textinput"
-	tea "github.com/charmbracelet/bubbletea"
-	"github.com/jankaszel/tmls/selectlist"
 	"log"
 	"os"
 	"path/filepath"
 	"slices"
+
+	input "github.com/charmbracelet/bubbles/textinput"
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/jankaszel/tmls/selectlist"
 )
 
 const (
@@ -101,9 +102,8 @@ func sessionNames(sessions []Session) []string {
 func initialModel() model {
 	sessions := getSessions()
 
-	nameInput := input.NewModel()
+	nameInput := input.New()
 	nameInput.Placeholder = "Create session"
-	nameInput.PlaceholderColor = "237"
 	nameInput.CharLimit = 64
 	nameInput.Width = 30
 
